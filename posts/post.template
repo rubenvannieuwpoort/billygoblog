@@ -1,0 +1,16 @@
+<html>
+	<head>
+		<title>{{.Title}}</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+{{- range .Stylesheets}}
+		<link rel="stylesheet" type="text/css" href="{{.Uri}}">
+{{- end}}
+	</head>
+	<body>
+		<div class="container">
+{{- range .Content}}
+			{{eval .}}
+{{- end}}
+		</div>
+	</body>
+</html>
