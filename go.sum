@@ -1,5 +1,5 @@
-github.com/graemephi/goldmark-qjs-katex v0.3.0 h1:2TEJmusLMOBezLLI3sDDxhieFITyqTYqD+OJgiy1QNo=
-github.com/graemephi/goldmark-qjs-katex v0.3.0/go.mod h1:Zts7mHmO4/K7SupeCn6PRgmEdkww9QTr3QNDVnAJG6M=
+github.com/graemephi/goldmark-qjs-katex v0.3.1-0.20241020150327-4b36bd37700f h1:9a1JT3gtAl+2VURvJ4XlOK/43kf270tphzIWilyHysg=
+github.com/graemephi/goldmark-qjs-katex v0.3.1-0.20241020150327-4b36bd37700f/go.mod h1:Zts7mHmO4/K7SupeCn6PRgmEdkww9QTr3QNDVnAJG6M=
 github.com/yuin/goldmark v1.1.30/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.7.4 h1:BDXOHExt+A7gwPCJgPIIq7ENvceR7we7rOS9TNoLZeg=
 github.com/yuin/goldmark v1.7.4/go.mod h1:uzxRWxtg69N339t3louHJ7+O03ezfj6PlliRlaOzY1E=
