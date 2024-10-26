@@ -3,12 +3,14 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"cmp"
 	"fmt"
 	"html/template"
 	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"unicode/utf8"
 
@@ -20,7 +22,7 @@ import (
 )
 
 type FileEntry struct {
-	Properties map[string]interface{}
+	Properties map[string]string
 	Content    *string
 	Tree       *map[string][]FileEntry
 }
@@ -92,6 +94,7 @@ func loadTemplates(templatesFolder string) error {
 
 			template := template.New(relativePath).Funcs(map[string]any{
 				"renderMarkdown": renderMarkdown,
+				"sortBy":         sortBy,
 			})
 
 			template, err = template.ParseFiles(path)
@@ -158,7 +161,7 @@ func handleFolder(inputFolder string, outputFolder string) ([]FileEntry, error) 
 
 		if hasFrontMatter, frontMatter, body := tryParseFrontMatter(fileContents); hasFrontMatter {
 			// There is front matter, so parse it to a FileEntry and add to result.
-			var properties map[string]interface{}
+			var properties map[string]string
 			if err := yaml.Unmarshal([]byte(frontMatter), &properties); err != nil {
 				return nil, fmt.Errorf("failed to unmarshal \"%s\": %w", inputPath, err)
 			}
@@ -177,13 +180,8 @@ func handleFolder(inputFolder string, outputFolder string) ([]FileEntry, error) 
 			}
 
 			var output string
-			if template, hasTemplate := properties["template"]; hasTemplate {
+			if templateID, hasTemplate := properties["template"]; hasTemplate {
 				// If a template is specified, use it to render the file.
-				templateID, templateIsString := template.(string)
-				if !templateIsString {
-					return nil, fmt.Errorf("error in file \"%s\" property \"template\" should be a string: %w", inputPath, err)
-				}
-
 				output, err = renderTemplate(templateID, entry)
 				if err != nil {
 					return nil, fmt.Errorf("failed to render template \"%s\" for file \"%s\": %w", templateID, inputPath, err)
@@ -307,4 +305,19 @@ func getURI(path string) (string, error) {
 	}
 
 	return strings.TrimSuffix(relativePath, filepath.Ext(relativePath)), nil
+}
+
+func sortBy(property string, things []FileEntry, ascending bool) []FileEntry {
+	result := make([]FileEntry, len(things))
+	copy(result, things)
+	slices.SortFunc(result, func(aEntry, bEntry FileEntry) int {
+		result := cmp.Compare(aEntry.Properties[property], bEntry.Properties[property])
+
+		if !ascending {
+			result = -result
+		}
+
+		return result
+	})
+	return result
 }
