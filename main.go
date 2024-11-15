@@ -40,7 +40,10 @@ var markdown = goldmark.New(
 		extension.Table,
 		extension.Typographer,
 	),
-	goldmark.WithRendererOptions(html.WithHardWraps()),
+	goldmark.WithRendererOptions(
+		html.WithHardWraps(),
+		html.WithUnsafe(),
+	),
 )
 
 var templates = make(map[string]*template.Template)
