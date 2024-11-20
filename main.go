@@ -15,6 +15,7 @@ import (
 	"unicode/utf8"
 
 	qjskatex "github.com/graemephi/goldmark-qjs-katex"
+	myextension "github.com/rubenvannieuwpoort/billygoblog/extension"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
@@ -39,6 +40,7 @@ var markdown = goldmark.New(
 		&qjskatex.Extension{},
 		extension.Table,
 		extension.Typographer,
+		myextension.Asides,
 	),
 	goldmark.WithRendererOptions(
 		html.WithHardWraps(),
